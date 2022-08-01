@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  db:
+    environment:
+     - POSTGRES_DB=test
+    volumes: 
+      - ./db/test:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"   
+  web:
+    env_file: .env.test
+    build:
+      context: .
+      dockerfile: ./Dockerfile.test
+    ports:
+      - "3002:3002"  
+     

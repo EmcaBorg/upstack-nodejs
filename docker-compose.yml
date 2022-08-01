@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+    db:
+      image: postgres:latest
+      restart: always
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=dev
+      ports:
+        - 5432:5432
+      volumes: 
+        - ./db/dev:/var/lib/postgresql/data
+        - ./scripts/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+        - ./scripts/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+    web:
+      env_file: .env
+      build: .
+      ports:
+        - "3001:3001"
+      depends_on:
+        - db     
